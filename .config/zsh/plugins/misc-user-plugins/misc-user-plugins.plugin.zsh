@@ -18,6 +18,28 @@ dotd() {
     fi
 }
 
+#{{{1 yadm -> y
+# No arguments: `yadm status`
+# With arguments: acts like `yadm`
+y() {
+  if [[ $# -gt 0 ]]; then
+    yadm "$@"
+  else
+    yadm status -unormal
+  fi
+}
+#}}}1
+
+
+weather(){
+    curl wttr.in\?m
+}
+weatherh(){
+    curl wttr.in\?format=v2\&m
+}
+
+
+
 #{{{ open todo
 td() {
 	nvim "/Users/henry/Documents/obsidian/300 - week notes/to-be-synced/todo-weekly.md"

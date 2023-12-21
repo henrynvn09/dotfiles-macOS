@@ -56,5 +56,8 @@ yabai -m rule --add app="^(Code)$" space=2
 # Social
 yabai -m rule --add app="^(Slack|Discord)$" space=3
 
+# Clean up empty spaces with no windows on them.
+yabai -m signal --add event=space_changed action="sh $HOME/.config/yabai/cleanEmptySpaces.sh"
 
 echo "yabai configuration loaded.."
+
