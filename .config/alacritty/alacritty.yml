@@ -80,35 +80,23 @@ bell:
 
 # Key bindings
 key_bindings:
-  #- { key: V,        mods: Command,       action: Paste                        }
-  #- { key: C,        mods: Command,       action: Copy                         }
+  - { key: C,        mods: Command,       chars: "\x03"                         }
+  - { key: V,        mods: Command,       chars: "\x16"            }
+  - { key: V,        mods: Command|Shift,       action: Paste                        }
+  - { key: C,        mods: Command|Shift,       action: Copy                         }
     #  - { key: Q,        mods: Command,       action: Quit                         }
   - { key: N,        mods: Command,       action: CreateNewWindow             }
 
   - { key: Equals,   mods: Command,       action: IncreaseFontSize             }
   - { key: Minus,    mods: Command,       action: DecreaseFontSize             }
   - { key: Minus,    mods: Command|Shift, action: ResetFontSize                }
-    #  - { key: Left,     mods: Shift,         chars: "\x1b[1;2D"                   }
-    #  - { key: Left,     mods: Control,       chars: "\x1b[1;5D"                   }
-    #  - { key: Left,     mods: Alt,           chars: "\x1b[1;3D"                   }
-    #  - { key: Left,                          chars: "\x1b[D",   mode: ~AppCursor  }
-    #  - { key: Left,                          chars: "\x1bOD",   mode: AppCursor   }
-    #  - { key: Right,    mods: Shift,         chars: "\x1b[1;2C"                   }
-    #  - { key: Right,    mods: Control,       chars: "\x1b[1;5C"                   }
-    #  - { key: Right,    mods: Alt,           chars: "\x1b[1;3C"                   }
-    #  - { key: Right,                         chars: "\x1b[C",   mode: ~AppCursor  }
-    #  - { key: Right,                         chars: "\x1bOC",   mode: AppCursor   }
-    #  - { key: Up,       mods: Shift,         chars: "\x1b[1;2A"                   }
-    #  - { key: Up,       mods: Control,       chars: "\x1b[1;5A"                   }
-    #  - { key: Up,       mods: Alt,           chars: "\x1b[1;3A"                   }
-    #  - { key: Up,                            chars: "\x1b[A",   mode: ~AppCursor  }
-    #  - { key: Up,                            chars: "\x1bOA",   mode: AppCursor   }
-    #  - { key: Down,     mods: Shift,         chars: "\x1b[1;2B"                   }
-    #  - { key: Down,     mods: Control,       chars: "\x1b[1;5B"                   }
-    #  - { key: Down,     mods: Alt,           chars: "\x1b[1;3B"                   }
-    #  - { key: Down,                          chars: "\x1b[B",   mode: ~AppCursor  }
-    #  - { key: Down,                          chars: "\x1bOB",   mode: AppCursor   }
-    #  - { key: Tab,      mods: Shift,         chars: "\x1b[Z"                      }
+
+    # For zsh, map following combination Cmd to Ctrl
+  - { key: R,        mods: Command,       chars: "\x12"          }
+  - { key: F,        mods: Command,       chars: "\x06"          }
+  - { key: T,        mods: Command,       chars: "\x14"          }
+
+
   - { key: F1,                            chars: "\x1bOP"                      }
   - { key: F2,                            chars: "\x1bOQ"                      }
   - { key: F3,                            chars: "\x1bOR"                      }

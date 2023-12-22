@@ -39,6 +39,10 @@ weatherh(){
 }
 
 
+#{{{ open todo
+readme() {
+	nvim "$HOME/README.md"
+}
 
 #{{{ open todo
 td() {

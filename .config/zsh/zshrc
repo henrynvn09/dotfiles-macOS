@@ -117,3 +117,6 @@ typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[path]=none
 
 eval "$(starship init zsh)"
+
+bindkey '^[[b' beginning-of-line
+
