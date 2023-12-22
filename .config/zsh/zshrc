@@ -44,13 +44,13 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 plugins=(
 	#git
 	macos
-	fzf
 	z
 	copypath
 	sprunge
 	dircycle
 	zsh-interactive-cd
-	macos
+	vi-mode
+	fzf
 	misc-user-plugins
 	
 	# non Oh my zsh
