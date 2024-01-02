@@ -1,0 +1,73 @@
+import = ["/Users/henry/.config/alacritty/themes/themes/taerminal.toml"]
+
+[bell]
+animation = "EaseOutExpo"
+color = "#176080"
+duration = 200
+
+[cursor]
+blink_timeout = 0
+unfocused_hollow = true
+style = { blinking = "Always"} #blink_interval = 500
+
+[font]
+bold = { family = "JetBrainsMono Nerd Font", style = "SemiBold" }
+italic = { family = "JetBrainsMono Nerd Font", style = "Italic" }
+normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+
+size = 14.0
+offset = { x = 0, y = 1 }
+# Thin stroke font rendering (macOS only)
+#AppleFontSmoothing = true
+
+
+[scrolling]
+history = 200
+multiplier = 3
+
+[window]
+decorations = "buttonless"
+opacity = 1.0
+startup_mode = "Windowed"
+
+dimensions = { columns = 80, lines = 24 }
+padding = { x = 10, y = 10 }
+
+# Spread additional padding evently around the terminal content
+dynamic_padding = true
+
+[keyboard]
+bindings = [
+    { key = "C", mods = "Command", chars = "\u0003" },
+    { key = "V", mods = "Command", chars = "\u0016" },
+    { key = "V", mods = "Command|Shift", action = "Paste" },
+    { key = "C", mods = "Command|Shift", action = "Copy" },
+    { key = "N", mods = "Command", action = "CreateNewWindow" },
+    { key = "Equals", mods = "Command", action = "IncreaseFontSize" },
+    { key = "Minus", mods = "Command", action = "DecreaseFontSize" },
+    { key = "Minus", mods = "Command|Shift", action = "ResetFontSize" },
+    { key = "R", mods = "Command", chars = "\u0012" },
+    { key = "F", mods = "Command", chars = "\u0006" },
+    { key = "T", mods = "Command", chars = "\u0014" },
+    { key = "F1", chars = "\u001bOP" },
+    { key = "F2", chars = "\u001bOQ" },
+    { key = "F3", chars = "\u001bOR" },
+    { key = "F4", chars = "\u001bOS" },
+    { key = "F5", chars = "\u001b[15~" },
+    { key = "F6", chars = "\u001b[17~" },
+    { key = "F7", chars = "\u001b[18~" },
+    { key = "F8", chars = "\u001b[19~" },
+    { key = "F9", chars = "\u001b[20~" },
+    { key = "F10", chars = "\u001b[21~" },
+    { key = "F11", chars = "\u001b[23~" },
+    { key = "F12", chars = "\u001b[24~" },
+    { key = "Back", chars = "\u007f" },
+    { key = "Back", mods = "Alt", chars = "\u001b\u007F" },
+    { key = "Insert", chars = "\u001b[2~" },
+    { key = "Delete", chars = "\u001b[3~" },
+]
+
+
+# dynamic_title = false
+
+# vim = nospell
