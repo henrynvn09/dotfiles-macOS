@@ -120,3 +120,4 @@ eval "$(starship init zsh)"
 
 bindkey '^[[b' beginning-of-line
 
+export TERM="xterm-256color"
