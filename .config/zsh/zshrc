@@ -121,3 +121,5 @@ eval "$(starship init zsh)"
 bindkey '^[[b' beginning-of-line
 
 export TERM="xterm-256color"
+
+alias server='ssh -X lnxsrv15.seas.ucla.edu -l nguyend'

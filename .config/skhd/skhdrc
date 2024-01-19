@@ -35,7 +35,7 @@ alt - r : yabai -m space --rotate 90
 # toggle window fullscreen zoom
 alt - f : yabai -m window --toggle zoom-fullscreen
 
-shift + alt - s : yabai -m window --toggle sticky; \
+alt - s : yabai -m window --toggle sticky; \
           yabai -m window --toggle topmost;\
           yabai -m window --toggle pip
 
@@ -93,7 +93,7 @@ cmd + alt - w : yabai -m space --destroy
 #shift + alt - p : yabai -m window --display previous; yabai -m display --focus previous
 
 # Stack binding
-alt - s : yabai -m window --stack next
+#alt - s : yabai -m window --stack next
 shift + alt - left: $HOME/.config/skhd/stack.sh west
 shift + alt - down: $HOME/.config/skhd/stack.sh south
 shift + alt - up: $HOME/.config/skhd/stack.sh north

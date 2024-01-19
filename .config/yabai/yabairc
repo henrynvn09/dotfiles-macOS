@@ -49,7 +49,7 @@ yabai -m rule --add app="${system_apps}" manage=off
 yabai -m rule --add app="^Raycast$" manage=off
 
 # Web browsers
-yabai -m rule --add label="Safari" app="^(Google Chrome|Firefox|Safari|Orion)$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy)$|^History" manage=off space=1
+yabai -m rule --add label="Safari" app="^(Google Chrome|Firefox|Safari|Orion)$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy)$|^History" manage=off
 
 # Text editors
 yabai -m rule --add app="^(Code)$" space=2
