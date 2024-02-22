@@ -46,11 +46,12 @@ readme() {
 
 #{{{ open todo
 td() {
-	nvim "/Users/henry/Documents/obsidian/300 - week notes/to-be-synced/todo-weekly.md"
+	nvim +4 "$HOME/Documents/obsidian/300 - week notes/todo-weekly.md"
 }
 
 #{{{ open class todo
 tdc() {
-	week_number=$(date +%V)
-	nvim "/Users/henry/Documents/obsidian/300 - week notes/2023-W$week_number.md"
+	local week_number=$(date +%V)
+  local year=$(date +%Y)
+	nvim +31 "$HOME/Documents/obsidian/300 - week notes/weekly/${year}-W${week_number}.md"
 }

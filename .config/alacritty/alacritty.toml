@@ -42,7 +42,7 @@ bindings = [
     { key = "C", mods = "Command", chars = "\u0003" },
     { key = "V", mods = "Command", chars = "\u0016" },
     { key = "V", mods = "Command|Shift", action = "Paste" },
-    { key = "C", mods = "Command|Shift", action = "Copy" },
+    { key = "C", mods = "Command|Shift", action = "Copy"},
     { key = "N", mods = "Command", action = "CreateNewWindow" },
     { key = "Equals", mods = "Command", action = "IncreaseFontSize" },
     { key = "Minus", mods = "Command", action = "DecreaseFontSize" },
@@ -50,6 +50,11 @@ bindings = [
     { key = "R", mods = "Command", chars = "\u0012" },
     { key = "F", mods = "Command", chars = "\u0006" },
     { key = "T", mods = "Command", chars = "\u0014" },
+
+    # ^F scrolling page down
+    { key = "F", mods = "Command", action = "ScrollPageDown", mode ="~Alt"},
+    { key = "B", mods = "Command", action = "ScrollPageUp", mode ="~Alt"},
+
     { key = "F1", chars = "\u001bOP" },
     { key = "F2", chars = "\u001bOQ" },
     { key = "F3", chars = "\u001bOR" },
