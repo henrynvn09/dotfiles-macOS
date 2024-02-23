@@ -3,3 +3,5 @@
 	email = henrynvn09@gmail.com
 [core]
 	symlinks = true
+[status]
+	showUntrackedFiles = yes

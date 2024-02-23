@@ -25,7 +25,7 @@ y() {
   if [[ $# -gt 0 ]]; then
     yadm "$@"
   else
-    yadm status -unormal
+    yadm status
   fi
 }
 #}}}1

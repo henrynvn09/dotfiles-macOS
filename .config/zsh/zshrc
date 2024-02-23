@@ -104,6 +104,9 @@ bindkey '^E' fzf-cd-widget
 
 #bindkey " " magic-space
 
+# dircycle plugin
+bindkey '^[[1;10C' insert-cycledleft
+bindkey '^[[1;10D' insert-cycledright
 # 1}}}
 
 export FZF_DEFAULT_COMMAND='fd --max-depth 4'
@@ -125,6 +128,4 @@ export TERM="xterm-256color"
 alias seas='ssh -X lnxsrv15.seas.ucla.edu -l nguyend'
 alias ydocker='docker start -i spark'
 
-bindkey '^[[1;4D' insert-cycledleft
-bindkey '^[[1;4C' insert-cycledright
 
