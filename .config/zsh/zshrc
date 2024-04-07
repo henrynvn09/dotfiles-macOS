@@ -6,6 +6,10 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=/opt/homebrew/bin:$PATH
 export ZSH="$HOME/.oh-my-zsh"
 
+# ============== PERSONAL PATH ==================
+export OBSIDIAN="$HOME/Documents/obsidian"
+export OBSIDIAN_CURRENT_CLASS="$OBSIDIAN/109 - current classes"
+
 # Would you like to use another custom folder than $ZSH/custom?
 ZSH_CUSTOM="$CONFIG_HOME/zsh"
 

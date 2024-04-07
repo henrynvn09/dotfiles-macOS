@@ -38,6 +38,14 @@ weatherh(){
     curl wttr.in\?format=v2\&m
 }
 
+#{{{ cd to a folder in class with depth=1
+classd() {
+    cd $OBSIDIAN_CURRENT_CLASS
+    FI=$(fd . -t d -d 1 | fzf --preview 'tree -C {} -L 1')
+    if [ -n "$FI" ]; then
+        cd $FI
+    fi
+}
 
 #{{{ open todo
 readme() {

@@ -15,7 +15,7 @@ sudo yabai --load-sa
 
 # global settings
 yabai -m config                                 \
-    mouse_follows_focus          on            \
+    mouse_follows_focus          off            \
     focus_follows_mouse          off            \
     window_origin_display        default        \
     window_placement             second_child   \
@@ -35,7 +35,7 @@ yabai -m config                                 \
     bottom_padding               0             \
     left_padding                 0             \
     right_padding                0             \
-    window_gap                   06             \
+    window_gap                   8             \
     layout                       bsp            \
     mouse_modifier               alt             \
     mouse_action1                move           \
@@ -49,17 +49,20 @@ yabai -m rule --add app="${system_apps}" manage=off
 yabai -m rule --add app="^Raycast$" manage=off
 
 # Web browsers
-yabai -m rule --add label="Safari" app="^(Google Chrome|Firefox|Safari|Orion)$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy)$|^History" manage=off
+yabai -m rule --add label="Safari" app="^(Google Chrome|Firefox|Safari|Arc)$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy)$|^History" manage=off
 
 yabai -m rule --add label="calendar" app="^(Fantastical)"  manage=off
+#yabai -m rule --add app="^Arc$" title="^$" mouse_follows_focus=off
 
 # Text editors
 yabai -m rule --add app="^(Code)$" space=2
 # Social
-yabai -m rule --add app="^(Slack|Discord)$" space=3
+yabai -m rule --add app="^(Slack|Discord)$" space=5
 
 # Clean up empty spaces with no windows on them.
 yabai -m signal --add event=space_changed action="sh $HOME/.config/yabai/cleanEmptySpaces.sh"
+
+yabai -m rule --apply
 
 echo "yabai configuration loaded.."
 

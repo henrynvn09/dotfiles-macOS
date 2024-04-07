@@ -71,7 +71,7 @@ alt - 2 : yabai -m space --focus 2
 alt - 3 : yabai -m space --focus 3
 alt - 4 : yabai -m space --focus 4
 alt - 5 : yabai -m space --focus 5
-#alt - 6 : yabai -m space --focus 6
+alt - 6 : yabai -m space --focus 6
 #alt - 7 : yabai -m space --focus 7
 #alt - 8 : yabai -m space --focus 8
 #alt - 9 : yabai -m space --focus 9
@@ -104,8 +104,10 @@ alt - down : yabai -m window --focus stack.next || yabai -m window --focus stack
 
 # Disable system dumb binding
 cmd - h : echo "Command + H is disabled"
-cmd - q : echo "Command + Q is disabled"
+
+#alt - q : yabai -m window --close #$HOME/.config/skhd/kill_last_instance.sh
 alt - q : $HOME/.config/skhd/kill_last_instance.sh
+cmd - q : echo "Command + Q is disabled"
 
 alt - d : yabai -m space --toggle show-desktop
 alt - w : yabai -m space --toggle mission-control
