@@ -52,7 +52,8 @@ yabai -m rule --add app="^Raycast$" manage=off
 yabai -m rule --add label="Safari" app="^(Google Chrome|Firefox|Safari|Arc)$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy)$|^History" manage=off
 
 yabai -m rule --add label="calendar" app="^(Fantastical)"  manage=off
-#yabai -m rule --add app="^Arc$" title="^$" mouse_follows_focus=off
+# yabai -m rule --add app="^Arc$" mouse_follows_focus=off
+# yabai -m rule --add app="^Arc$" subrole="AXSystemDialog" mouse_follows_focus=off
 
 # Text editors
 yabai -m rule --add app="^(Code)$" space=2

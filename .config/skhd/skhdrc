@@ -35,9 +35,11 @@ alt - r : yabai -m space --rotate 90
 # toggle window fullscreen zoom
 alt - f : yabai -m window --toggle zoom-fullscreen
 
-alt - s : yabai -m window --toggle sticky; \
-          yabai -m window --toggle topmost;\
-          yabai -m window --toggle pip
+# alt - s : yabai -m window --toggle sticky; \
+#           yabai -m window --toggle topmost;\
+#           yabai -m window --toggle pip
+alt - s : yabai -m window --toggle sticky;\
+           yabai -m window --grid 3:3:4:0:0:0
 
 # toggle padding and gap
 #alt - g : yabai -m space --toggle padding; yabai -m space --toggle gap
@@ -106,7 +108,9 @@ alt - down : yabai -m window --focus stack.next || yabai -m window --focus stack
 cmd - h : echo "Command + H is disabled"
 
 #alt - q : yabai -m window --close #$HOME/.config/skhd/kill_last_instance.sh
-alt - q : $HOME/.config/skhd/kill_last_instance.sh
+# alt - q : $HOME/.config/skhd/kill_last_instance.sh
+alt - q : osascript -e "tell application \"Finder\" to set p to item 1 of (get file of (processes whose frontmost = true)) as text" -e "tell application p to quit"
+
 cmd - q : echo "Command + Q is disabled"
 
 alt - d : yabai -m space --toggle show-desktop
