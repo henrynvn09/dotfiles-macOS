@@ -101,15 +101,15 @@ shift + alt - down: $HOME/.config/skhd/stack.sh south
 shift + alt - up: $HOME/.config/skhd/stack.sh north
 shift + alt - right: $HOME/.config/skhd/stack.sh east
 # focus stack
-alt - up : yabai -m window --focus stack.prev || yabai -m window --focus stack.last
-alt - down : yabai -m window --focus stack.next || yabai -m window --focus stack.first
+# alt - up : yabai -m window --focus stack.prev || yabai -m window --focus stack.last
+# alt - down : yabai -m window --focus stack.next || yabai -m window --focus stack.first
 
 # Disable system dumb binding
 cmd - h : echo "Command + H is disabled"
 
 #alt - q : yabai -m window --close #$HOME/.config/skhd/kill_last_instance.sh
-# alt - q : $HOME/.config/skhd/kill_last_instance.sh
-alt - q : osascript -e "tell application \"Finder\" to set p to item 1 of (get file of (processes whose frontmost = true)) as text" -e "tell application p to quit"
+alt - q : $HOME/.config/skhd/kill_last_instance.sh
+# alt - q : osascript -e "tell application \"Finder\" to set p to item 1 of (get file of (processes whose frontmost = true)) as text" -e "tell application p to quit"
 
 cmd - q : echo "Command + Q is disabled"
 

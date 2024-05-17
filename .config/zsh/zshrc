@@ -53,7 +53,7 @@ plugins=(
 	sprunge
 	dircycle
 	zsh-interactive-cd
-	vi-mode
+	zsh-vi-mode
 	fzf
 	misc-user-plugins
 	

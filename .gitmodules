@@ -10,3 +10,6 @@
 [submodule "/Users/henry/.config/nvim"]
 	path = /Users/henry/.config/nvim
 	url = https://github.com/NvChad/NvChad
+[submodule ".config/zsh/plugins/zsh-vi-mode"]
+	path = .config/zsh/plugins/zsh-vi-mode
+	url = https://github.com/jeffreytse/zsh-vi-mode

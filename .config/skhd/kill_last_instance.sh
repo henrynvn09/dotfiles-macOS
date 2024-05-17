@@ -13,5 +13,6 @@ fi
 if [ "$count_pid" -gt 1 ]; then
 	yabai -m window --close
 else
-	kill "${window_pid}"
+	# kill "${window_pid}"
+  osascript -e "tell application \"Finder\" to set p to item 1 of (get file of (processes whose frontmost = true)) as text" -e "tell application p to quit"
 fi
