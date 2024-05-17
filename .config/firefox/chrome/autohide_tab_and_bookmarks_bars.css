@@ -13,31 +13,31 @@
     pointer-events: none
   }
   
-  :root:not([customizing]) #navigator-toolbox:hover,
+  :root:not([customizing]),
   :root:not([customizing]) #titlebar{
     margin-bottom: calc(0px - 2 * var(--tab-block-margin) - var(--tab-min-height)) !important;
   }
   #TabsToolbar:not([customizing]){ visibility: hidden; transition: visibility 0ms linear 450ms }
   
-  #navigator-toolbox,
-  #titlebar{ transition: margin-bottom 48ms linear 450ms }
-  
-  #navigator-toolbox:hover{ transition-delay: 0s }
-  #navigator-toolbox:hover > #titlebar{
-    margin-bottom: 0px !important;
-    transition-delay: 0s;
-  }
-  
-  #navigator-toolbox:hover #TabsToolbar{
-    visibility: visible;
-    transition-delay: 18ms;
-  }
+  /* #navigator-toolbox, */
+  /* #titlebar{ transition: margin-bottom 48ms linear 450ms } */
+  /*  */
+  /* #navigator-toolbox:hover{ transition-delay: 0s } */
+  /* #navigator-toolbox:hover > #titlebar{ */
+  /*   margin-bottom: 0px !important; */
+  /*   transition-delay: 0s; */
+  /* } */
+  /*  */
+  /* #navigator-toolbox:hover #TabsToolbar{ */
+  /*   visibility: visible; */
+  /*   transition-delay: 18ms; */
+  /* } */
   /* These rules make sure that height of tabs toolbar doesn't exceed tab-min-height */
-  #tabbrowser-tabs:not([secondarytext-unsupported]) .tab-label-container{
-    max-height: var(--tab-min-height) !important;
-  }
-  .tab-label{ line-height: 20px !important; }
-  :root[uidensity="compact"] .tab-label{ line-height: 18px !important; }
+  /* #tabbrowser-tabs:not([secondarytext-unsupported]) .tab-label-container{ */
+  /*   max-height: var(--tab-min-height) !important; */
+  /* } */
+  /* .tab-label{ line-height: 20px !important; } */
+  /* :root[uidensity="compact"] .tab-label{ line-height: 18px !important; } */
 
 
 
@@ -91,7 +91,7 @@
   }
   
   #PlacesToolbarItems > .bookmark-item .toolbarbutton-text {
-    transition: opacity 20ms linear 450ms !important;
+    transition: opacity 20ms linear 350ms !important;
     opacity: 0 !important;
   }
   
