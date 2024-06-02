@@ -13,3 +13,6 @@
 [submodule ".config/zsh/plugins/zsh-vi-mode"]
 	path = .config/zsh/plugins/zsh-vi-mode
 	url = https://github.com/jeffreytse/zsh-vi-mode
+[submodule ".config/zsh/plugins/ohmyzsh-full-autoupdate"]
+	path = .config/zsh/plugins/ohmyzsh-full-autoupdate
+	url = https://github.com/Pilaton/OhMyZsh-full-autoupdate
