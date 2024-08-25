@@ -7,7 +7,7 @@
 }
 
 #sidebar-box{
-  --uc-sidebar-width: 33px;
+  --uc-sidebar-width: 5%;
   --uc-sidebar-hover-width: 300px;
   --uc-autohide-sidebar-delay: 90ms;
   position: relative;

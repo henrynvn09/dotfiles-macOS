@@ -48,10 +48,10 @@ system_apps="^(LuLu|Vimac|Calculator|Software Update|Dictionary|System (Preferen
 yabai -m rule --add app="${system_apps}" manage=off
 yabai -m rule --add app="^Raycast$" manage=off
 
-yabai -m rule --add title="Extension: \(Bitwarden - Free Password Manager\) - Bitwarden" manage=off
+yabai -m rule --add app="^Firefox$" title="^Extension: \(Bitwarden" manage=off
 
 # Web browsers
-yabai -m rule --add label="Browsers" app="^(Google Chrome|Firefox Developer Edition|Safari|Arc|Firefox)$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy)$|^History|^Picture-in-Picture$" manage=off
+yabai -m rule --add label="Browsers" app="^(Google Chrome|Firefox Developer Edition|Safari|Arc|Firefox)$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|History|Picture-in-Picture|Library)$" manage=off
 
 yabai -m rule --add label="calendar" app="^(Fantastical)"  manage=off
 # yabai -m rule --add app="^Arc$" mouse_follows_focus=off
@@ -65,6 +65,8 @@ yabai -m rule --add app="^(Slack|Discord)$" space=5
 yabai -m rule --add app="^(Spotify)$" space=9
 # Clean up empty spaces with no windows on them.
 yabai -m signal --add event=space_changed action="sh $HOME/.config/yabai/cleanEmptySpaces.sh"
+
+yabai -m rule --add app="zoom.us" sticky=on layout=float
 
 yabai -m rule --apply
 
