@@ -8,6 +8,12 @@ sudo visudo -f /private/etc/sudoers.d/yabai
 <user> ALL=(root) NOPASSWD: sha256:<hash> <yabai> --load-sa
 ```
 
+## Switch node version
+```sh 
+nvm ls 
+nvm use ...
+```
+
 ## What to do after restart
 - Do this if yabai laggy
 ```sh 
