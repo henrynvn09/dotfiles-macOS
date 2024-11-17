@@ -63,3 +63,8 @@ tdc() {
   local year=$(date +%Y)
 	nvim +31 "$HOME/Documents/obsidian/300 - week notes/weekly/${year}-W${week_number}.md"
 }
+
+#{{{
+send_to_kindle() {
+  echo mobi | mutt -s mobi -a "$argv[1]" -- dannytechn@kindle.com
+}
