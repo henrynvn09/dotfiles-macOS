@@ -18,6 +18,14 @@
     margin-bottom: calc(0px - 2 * var(--tab-block-margin) - var(--tab-min-height)) !important;
   }
   #TabsToolbar:not([customizing]){ visibility: hidden; transition: visibility 0ms linear 450ms }
+
+/* Hide native tab bar */
+#tabbrowser-tabs {
+    visibility: collapse;
+}
+#TabsToolbar{
+    display: none;
+}
   
   /* #navigator-toolbox, */
   /* #titlebar{ transition: margin-bottom 48ms linear 450ms } */
