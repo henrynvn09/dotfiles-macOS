@@ -57,6 +57,7 @@ plugins=(
   docker
 	fzf
 	misc-user-plugins
+  photo-editing-user
 	
 	# non Oh my zsh
 	zsh-autosuggestions
