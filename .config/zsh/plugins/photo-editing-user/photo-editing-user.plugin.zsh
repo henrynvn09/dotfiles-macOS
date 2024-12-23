@@ -1,43 +1,73 @@
 photo_downscale_to_4k() {
-    # Initialize variables
+    # Initialize default variables
     local OUTPUT_DIR="_OUTPUT"
-    local INPUT_FILES=() # Properly initialize the array
+    local INPUT_FILES=()
+
+    # Function to display help message
+    local show_help() {
+        echo "Usage: photo_downscale_to_4k [options] <image_file(s)>"
+        echo
+        echo "Description:"
+        echo "  Resizes one or more images to a maximum dimension of 4000 pixels (4K) using ImageMagick."
+        echo
+        echo "Options:"
+        echo "  -o, --output <directory>   Specify the output directory for resized images."
+        echo "                             Defaults to '_OUTPUT'."
+        echo "  -h, --help                 Display this help message and exit."
+        echo
+        echo "Examples:"
+        echo "  photo_downscale_to_4k image1.jpg image2.png"
+        echo "  photo_downscale_to_4k *.jpg -o resized_images"
+        echo "  photo_downscale_to_4k -o output_dir *.png"
+    }
 
     # Parse arguments
     while [[ $# -gt 0 ]]; do
         case "$1" in
             -o|--output)
-                OUTPUT_DIR="$2"
-                shift 2
+                if [[ -n "$2" && ! "$2" =~ ^- ]]; then
+                    OUTPUT_DIR="$2"
+                    shift 2
+                else
+                    echo "Error: --output requires a directory name."
+                    echo "Use 'photo_downscale_to_4k --help' for more information."
+                    return 1
+                fi
                 ;;
             -h|--help)
-                echo "Usage: resize_to_4k <image_file(s)> [-o <output_folder>]"
-                echo
-                echo "Description:"
-                echo "  Resizes one or more images to a maximum dimension of 4000 pixels (4K)."
-                echo
-                echo "Arguments:"
-                echo "  <image_file(s)>  One or more input image files (supports wildcards)."
-                echo "  -o, --output     Optional. Specify the folder to save the output files."
-                echo "                   Defaults to '_OUTPUT'."
-                echo
-                echo "Examples:"
-                echo "  resize_to_4k photo.jpg"
-                echo "  resize_to_4k DSCF00* -o custom_folder"
+                show_help
                 return 0
                 ;;
+            -*)
+                echo "Error: Unknown option '$1'"
+                echo "Use 'photo_downscale_to_4k --help' for usage information."
+                return 1
+                ;;
             *)
-                # Add the argument to the input files array
                 INPUT_FILES+=("$1")
                 shift
                 ;;
         esac
     done
 
+    # Check if ImageMagick is installed
+    if ! command -v magick &> /dev/null && ! command -v convert &> /dev/null; then
+        echo "Error: ImageMagick's 'magick' or 'convert' command is not installed."
+        echo "Please install ImageMagick and try again."
+        return 1
+    fi
+
+    # Determine which ImageMagick command to use
+    if command -v magick &> /dev/null; then
+        IM_CMD="magick"
+    else
+        IM_CMD="convert"
+    fi
+
     # Check if any input files were provided
     if [[ ${#INPUT_FILES[@]} -eq 0 ]]; then
         echo "Error: No input files provided."
-        echo "Use 'resize_to_4k --help' for more information."
+        echo "Use 'photo_downscale_to_4k --help' for more information."
         return 1
     fi
 
@@ -45,24 +75,33 @@ photo_downscale_to_4k() {
     mkdir -p "$OUTPUT_DIR"
 
     # Process each input file
-    for INPUT_FILE in "${INPUT_FILES[@]}"; do
-        # Skip if the file doesn't exist
-        if [[ ! -f "$INPUT_FILE" ]]; then
-            echo "Warning: File not found: $INPUT_FILE"
-            continue
-        fi
+    for INPUT_PATTERN in "${INPUT_FILES[@]}"; do
+        # Expand wildcards
+        for INPUT_FILE in $INPUT_PATTERN; do
+            # Check if the file exists
+            if [[ ! -f "$INPUT_FILE" ]]; then
+                echo "Warning: File not found: $INPUT_FILE"
+                continue
+            fi
 
-        # Generate the default output file name
-        # local OUTPUT_FILE="${OUTPUT_DIR}/${INPUT_FILE%.*}_4k.${INPUT_FILE##*.}"
-        local OUTPUT_FILE="${OUTPUT_DIR}/${INPUT_FILE%.*}.${INPUT_FILE##*.}"
+            # Generate the output file path
+            local BASENAME=$(basename "$INPUT_FILE")
+            local OUTPUT_FILE="${OUTPUT_DIR}/${BASENAME}"
 
-        # Resize the image
-        sips -Z 4000 "$INPUT_FILE" --out "$OUTPUT_FILE"
+            # Resize the image using ImageMagick
+            # The '\>' flag ensures that images are only resized if they are larger than the specified dimensions
+            "$IM_CMD" "$INPUT_FILE" -resize "4000x4000>" "$OUTPUT_FILE"
 
-        # Notify the user
-        echo "Image resized to 4000px (maximum dimension) and saved in: $OUTPUT_FILE"
+            # Check if the resize was successful
+            if [[ $? -eq 0 ]]; then
+                echo "Image resized to a maximum of 4000px and saved to: $OUTPUT_FILE"
+            else
+                echo "Error: Failed to resize '$INPUT_FILE'."
+            fi
+        done
     done
 }
+
 
 # {{{1
 
@@ -234,5 +273,129 @@ photo_downscale_and_geotag() {
 
     # Notify the user
     echo "Images resized and geotagged successfully!"
+}
+
+# {{1
+photo_padding_1_1() {
+    # Initialize default variables
+    local OUTPUT_DIR="_SQUARE_PADDED_PHOTOS"
+    local INPUT_FILES=()
+    
+    # Function to display help message
+    local show_help() {
+        echo "Usage: photo_make_square [options] <image_file(s)>"
+        echo
+        echo "Description:"
+        echo "  Adds equal black padding to the top and bottom of landscape images to make them square (1:1 aspect ratio)."
+        echo
+        echo "Options:"
+        echo "  -o, --output <directory>   Specify the output directory for processed images."
+        echo "                             Defaults to '_SQUARE_PADDED_PHOTOS'."
+        echo "  -h, --help                 Display this help message and exit."
+        echo
+        echo "Examples:"
+        echo "  photo_make_square image1.jpg image2.png"
+        echo "  photo_make_square *.jpg -o square_images"
+        echo "  photo_make_square -o output_dir *.png"
+    }
+
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -o|--output)
+                if [[ -n "$2" && ! "$2" =~ ^- ]]; then
+                    OUTPUT_DIR="$2"
+                    shift 2
+                else
+                    echo "Error: --output requires a directory name."
+                    return 1
+                fi
+                ;;
+            -h|--help)
+                show_help
+                return 0
+                ;;
+            -*)
+                echo "Error: Unknown option '$1'"
+                echo "Use 'photo_make_square --help' for usage information."
+                return 1
+                ;;
+            *)
+                INPUT_FILES+=("$1")
+                shift
+                ;;
+        esac
+    done
+
+    # Check if ImageMagick is installed
+    if ! command -v convert &> /dev/null; then
+        echo "Error: ImageMagick's 'convert' command is not installed."
+        echo "Please install ImageMagick and try again."
+        return 1
+    fi
+
+    # Check if any input files were provided
+    if [[ ${#INPUT_FILES[@]} -eq 0 ]]; then
+        echo "Error: No input files provided."
+        echo "Use 'photo_make_square --help' for more information."
+        return 1
+    fi
+
+    # Create the output directory if it doesn't exist
+    mkdir -p "$OUTPUT_DIR"
+
+    # Process each input file
+    for INPUT_FILE in "${INPUT_FILES[@]}"; do
+        # Handle wildcard expansion
+        for FILE in $INPUT_FILE; do
+            # Check if the file exists
+            if [[ ! -f "$FILE" ]]; then
+                echo "Warning: File not found: $FILE"
+                continue
+            fi
+
+            # Get image dimensions
+            read WIDTH HEIGHT <<< $(identify -format "%w %h" "$FILE")
+            
+            # Check if the image is landscape This doesn't work for fujifilm
+            if (( WIDTH <= HEIGHT )); then
+                echo "Skipping '$FILE': Not a landscape image."
+                continue
+            fi
+
+            # fujifilm photos need to be checked with image orientation property
+            # Extract the Orientation value using exiftool
+            orientation=$(exiftool "$FILE" | grep "Orientation" | awk -F ': ' '{print $2}')
+
+            # Check if the Orientation matches Rotate 270 CW or Rotate 90 CW
+            if [[ "$orientation" == "Rotate 270 CW" || "$orientation" == "Rotate 90 CW" ]]; then
+                echo "Skipping '$FILE': Not a landscape image."
+                continue
+            fi
+
+            # Calculate padding needed
+            local PADDING=$(( (WIDTH - HEIGHT) / 2 ))
+            # If the difference is odd, add the extra pixel to the bottom
+            local PADDING_TOP=$PADDING
+            local PADDING_BOTTOM=$PADDING
+            if (( (WIDTH - HEIGHT) % 2 != 0 )); then
+                PADDING_BOTTOM=$((PADDING_BOTTOM + 1))
+            fi
+
+            # Define output file path
+            local BASENAME=$(basename "$FILE")
+            local OUTPUT_FILE="${OUTPUT_DIR}/${BASENAME%.*}_square.${BASENAME##*.}"
+
+            # Add padding using ImageMagick
+            magick "$FILE" -background black -gravity center -extent "${WIDTH}x${WIDTH}" "$OUTPUT_FILE"
+
+            # Verify if the output was created
+            if [[ -f "$OUTPUT_FILE" ]]; then
+                echo "Processed '$FILE' -> '$OUTPUT_FILE'"
+            else
+                echo "Error processing '$FILE'."
+            fi
+        done
+    done
 }
 
