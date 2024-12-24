@@ -276,27 +276,31 @@ photo_downscale_and_geotag() {
 }
 
 # {{1
-photo_padding_1_1() {
+photo_padding_square() {
     # Initialize default variables
-    local OUTPUT_DIR="_SQUARE_PADDED_PHOTOS"
+    local OUTPUT_DIR="_PADDED_PHOTOS"
+    local SCALE_FACTOR="1:0.9"
     local INPUT_FILES=()
-    
+
     # Function to display help message
     local show_help() {
-        echo "Usage: photo_make_square [options] <image_file(s)>"
+        echo "Usage: photo_padding_scaled [options] <image_file(s)>"
         echo
         echo "Description:"
-        echo "  Adds equal black padding to the top and bottom of landscape images to make them square (1:1 aspect ratio)."
+        echo "  Adds black padding to images to match the specified aspect ratio."
+        echo "  Default aspect ratio is 1:0.9."
         echo
         echo "Options:"
         echo "  -o, --output <directory>   Specify the output directory for processed images."
-        echo "                             Defaults to '_SQUARE_PADDED_PHOTOS'."
+        echo "                             Defaults to '_PADDED_PHOTOS'."
+        echo "  -s, --scale <ratio>        Specify the aspect ratio as 'width:height'."
+        echo "                             Defaults to '1:0.9'."
         echo "  -h, --help                 Display this help message and exit."
         echo
         echo "Examples:"
-        echo "  photo_make_square image1.jpg image2.png"
-        echo "  photo_make_square *.jpg -o square_images"
-        echo "  photo_make_square -o output_dir *.png"
+        echo "  photo_padding_scaled image1.jpg image2.png"
+        echo "  photo_padding_scaled *.jpg -o scaled_images"
+        echo "  photo_padding_scaled -s 1:1.5 image1.jpg"
     }
 
     # Parse arguments
@@ -311,13 +315,22 @@ photo_padding_1_1() {
                     return 1
                 fi
                 ;;
+            -s|--scale)
+                if [[ -n "$2" && "$2" =~ ^[0-9]+:[0-9]+$ ]]; then
+                    SCALE_FACTOR="$2"
+                    shift 2
+                else
+                    echo "Error: --scale requires a valid ratio (e.g., 1:0.9)."
+                    return 1
+                fi
+                ;;
             -h|--help)
                 show_help
                 return 0
                 ;;
             -*)
                 echo "Error: Unknown option '$1'"
-                echo "Use 'photo_make_square --help' for usage information."
+                echo "Use 'photo_padding_scaled --help' for usage information."
                 return 1
                 ;;
             *)
@@ -337,9 +350,13 @@ photo_padding_1_1() {
     # Check if any input files were provided
     if [[ ${#INPUT_FILES[@]} -eq 0 ]]; then
         echo "Error: No input files provided."
-        echo "Use 'photo_make_square --help' for more information."
+        echo "Use 'photo_padding_scaled --help' for more information."
         return 1
     fi
+
+    # Parse scale factor into width and height
+    local SCALE_WIDTH=$(echo "$SCALE_FACTOR" | cut -d':' -f1)
+    local SCALE_HEIGHT=$(echo "$SCALE_FACTOR" | cut -d':' -f2)
 
     # Create the output directory if it doesn't exist
     mkdir -p "$OUTPUT_DIR"
@@ -356,7 +373,7 @@ photo_padding_1_1() {
 
             # Get image dimensions
             read WIDTH HEIGHT <<< $(identify -format "%w %h" "$FILE")
-            
+
             # Check if the image is landscape This doesn't work for fujifilm
             if (( WIDTH <= HEIGHT )); then
                 echo "Skipping '$FILE': Not a landscape image."
@@ -373,21 +390,25 @@ photo_padding_1_1() {
                 continue
             fi
 
+            # Calculate target dimensions based on scale factor
+            TARGET_HEIGHT=$(echo "scale=0; $WIDTH * $SCALE_HEIGHT / $SCALE_WIDTH" | bc)
+
             # Calculate padding needed
-            local PADDING=$(( (WIDTH - HEIGHT) / 2 ))
+            local PADDING=$(( (TARGET_HEIGHT - HEIGHT) / 2 ))
+
             # If the difference is odd, add the extra pixel to the bottom
             local PADDING_TOP=$PADDING
             local PADDING_BOTTOM=$PADDING
-            if (( (WIDTH - HEIGHT) % 2 != 0 )); then
+            if (( (TARGET_HEIGHT - HEIGHT) % 2 != 0 )); then
                 PADDING_BOTTOM=$((PADDING_BOTTOM + 1))
             fi
 
             # Define output file path
             local BASENAME=$(basename "$FILE")
-            local OUTPUT_FILE="${OUTPUT_DIR}/${BASENAME%.*}_square.${BASENAME##*.}"
+            local OUTPUT_FILE="${OUTPUT_DIR}/${BASENAME%.*}_scaled.${BASENAME##*.}"
 
             # Add padding using ImageMagick
-            magick "$FILE" -background black -gravity center -extent "${WIDTH}x${WIDTH}" "$OUTPUT_FILE"
+            magick "$FILE" -background black -gravity center -extent "${WIDTH}x${TARGET_HEIGHT}" "$OUTPUT_FILE"
 
             # Verify if the output was created
             if [[ -f "$OUTPUT_FILE" ]]; then
@@ -398,4 +419,3 @@ photo_padding_1_1() {
         done
     done
 }
-
