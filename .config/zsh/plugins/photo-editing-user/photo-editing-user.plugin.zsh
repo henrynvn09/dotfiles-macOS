@@ -8,7 +8,7 @@ photo_downscale_to_4k() {
         echo "Usage: photo_downscale_to_4k [options] <image_file(s)>"
         echo
         echo "Description:"
-        echo "  Resizes one or more images to a maximum dimension of 4000 pixels (4K) using ImageMagick."
+        echo "  Resizes one or more images to a maximum dimension of 4096 pixels (4K) using ImageMagick."
         echo
         echo "Options:"
         echo "  -o, --output <directory>   Specify the output directory for resized images."
@@ -51,8 +51,8 @@ photo_downscale_to_4k() {
     done
 
     # Check if ImageMagick is installed
-    if ! command -v magick &> /dev/null && ! command -v convert &> /dev/null; then
-        echo "Error: ImageMagick's 'magick' or 'convert' command is not installed."
+    if ! command -v magick &> /dev/null; then
+        echo "Error: ImageMagick's 'magick' command is not installed."
         echo "Please install ImageMagick and try again."
         return 1
     fi
@@ -60,8 +60,6 @@ photo_downscale_to_4k() {
     # Determine which ImageMagick command to use
     if command -v magick &> /dev/null; then
         IM_CMD="magick"
-    else
-        IM_CMD="convert"
     fi
 
     # Check if any input files were provided
@@ -90,11 +88,11 @@ photo_downscale_to_4k() {
 
             # Resize the image using ImageMagick
             # The '\>' flag ensures that images are only resized if they are larger than the specified dimensions
-            "$IM_CMD" "$INPUT_FILE" -resize "4000x4000>" "$OUTPUT_FILE"
+            "$IM_CMD" "$INPUT_FILE" -resize "4096x4096>" "$OUTPUT_FILE"
 
             # Check if the resize was successful
             if [[ $? -eq 0 ]]; then
-                echo "Image resized to a maximum of 4000px and saved to: $OUTPUT_FILE"
+                echo "Image resized to a maximum of 4096px and saved to: $OUTPUT_FILE"
             else
                 echo "Error: Failed to resize '$INPUT_FILE'."
             fi
@@ -200,7 +198,7 @@ photo_downscale_and_geotag() {
         echo "Usage: photo_resize_and_geotag [-o <output_folder>] [-lat <latitude> -lon <longitude>] [-coord <latitude,longitude> | -c <latitude,longitude>] <image_file(s)>"
         echo
         echo "Description:"
-        echo "  Resizes one or more images to a maximum dimension of 4000 pixels (4K) and adds geotags."
+        echo "  Resizes one or more images to a maximum dimension of 4096 pixels (4K) and adds geotags."
         echo
         echo "Arguments:"
         echo "  -o, --output             Optional. Specify the folder to save the output files."
@@ -341,8 +339,8 @@ photo_padding_square() {
     done
 
     # Check if ImageMagick is installed
-    if ! command -v convert &> /dev/null; then
-        echo "Error: ImageMagick's 'convert' command is not installed."
+    if ! command -v magick &> /dev/null; then
+        echo "Error: ImageMagick's command is not installed."
         echo "Please install ImageMagick and try again."
         return 1
     fi
@@ -419,3 +417,285 @@ photo_padding_square() {
         done
     done
 }
+# {{1
+
+# Function to add padding to an image and display help message
+photo_padder() {
+    local padding="100"  # Default padding set to 100 pixels
+    local output_dir="_PADDED_PHOTOS"
+    local input_files=()
+
+    # Function to display help message (inner function)
+    local show_help() {
+        echo "Usage: photo_padder [options] [<padding>] <image_file(s)>"
+        echo
+        echo "Description:"
+        echo "  Adds padding to the borders of images. Padding color (black or white)"
+        echo "  is chosen based on the dominant color of the image."
+        echo
+        echo "Options:"
+        echo "  -o, --output <directory>   Specify the output directory for processed images."
+        echo "                             Defaults to '_PADDED_PHOTOS'."
+        echo "  -h, --help                 Display this help message and exit."
+        echo
+        echo "Arguments:"
+        echo "  <padding>                  The amount of padding to add (in pixels)."
+        echo "                             Defaults to 100 if not specified."
+        echo "  <image_file(s)>            The image file(s) to process."
+        echo
+        echo "Examples:"
+        echo "  photo_padder image1.jpg image2.png"
+        echo "  photo_padder 50 *.jpg"
+        echo "  photo_padder -o my_padded_images image.png"
+        echo "  photo_padder 200 -o outputs *.gif"
+    }
+
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h|--help)
+                show_help
+                return 0
+                ;;
+            -o|--output)
+                if [[ -n "$2" && ! "$2" =~ ^- ]]; then
+                    output_dir="$2"
+                    shift 2
+                else
+                    echo "Error: --output requires a directory name."
+                    return 1
+                fi
+                ;;
+            -*)
+                echo "Error: Unknown option '$1'"
+                echo "Use 'photo_padder --help' for usage information."
+                return 1
+                ;;
+            *)
+                # If it's not an option, check if it's a number (padding)
+                if [[ "$1" =~ ^[0-9]+$ ]]; then
+                    # If padding is already set, it must be a file
+                    if [[ -n "$padding" && "$padding" != "100" ]]; then
+                        input_files+=("$1")
+                    else
+                        padding="$1"
+                    fi
+                else
+                    input_files+=("$1")
+                fi
+                shift
+                ;;
+        esac
+    done
+
+    # Check if any input files were provided
+    if [[ ${#input_files[@]} -eq 0 ]]; then
+        echo "Error: No input files provided."
+        echo "Use 'photo_padder --help' for more information."
+        return 1
+    fi
+
+    # Create the output directory if it doesn't exist
+    mkdir -p "$output_dir"
+
+    # Check if ImageMagick is installed
+    if ! command -v convert &> /dev/null; then
+        echo "Error: ImageMagick's 'convert' command is not installed."
+        echo "Please install ImageMagick and try again."
+        return 1
+    fi
+
+    # Process each input file
+    for input_file in "${input_files[@]}"; do
+        # Handle wildcard expansion
+        for file in "$input_file"; do
+            # Check if the file exists
+            if [[ ! -f "$file" ]]; then
+                echo "Warning: File not found: $file"
+                continue
+            fi
+
+            # Get image dimensions
+            read width height <<< $(identify -format "%w %h" "$file")
+
+            # Determine dominant color (simplified approach)
+            dominant_color=$(magick "$file" -scale 1x1\! -format "%[pixel:u]" info:-)
+            brightness=$(magick xc:"$dominant_color" -colorspace Gray -format "%[fx:int(255*r)]" info:-)
+
+            # Choose padding color
+            if (( brightness > 128 )); then
+                padding_color="black"
+            else
+                padding_color="white"
+            fi
+
+            # Calculate new dimensions
+            new_width=$((width + 2 * padding))
+            new_height=$((height + 2 * padding))
+
+            # Define output file path (keep original filename)
+            local basename=$(basename "$file")
+            output_file="${output_dir}/${basename}"
+
+            # Add padding using ImageMagick
+            magick "$file" \
+                -background "$padding_color" \
+                -gravity center \
+                -extent "${new_width}x${new_height}" \
+                "$output_file"
+
+            # Verify if the output was created
+            if [[ -f "$output_file" ]]; then
+                echo "Processed '$file' -> '$output_file'"
+            else
+                echo "Error processing '$file'."
+            fi
+        done
+    done
+}
+
+# {{{1
+# Function to crop images to a specified or automatically determined aspect ratio
+photo_cropper() {
+    local output_dir="_CROPPED_PHOTOS"
+    local crop_ratio=""  # Default is to auto-determine
+    local input_files=()
+
+    # Function to display help message (inner function)
+    local show_help() {
+        echo "Usage: photo_cropper [options] <image_file(s)>"
+        echo
+        echo "Description:"
+        echo "  Crops images to a specified aspect ratio (width:height) or automatically"
+        echo "  determines the aspect ratio (4:5 or 5:4) based on the image's dimensions."
+        echo
+        echo "Options:"
+        echo "  -o, --output <directory>      Specify the output directory for processed images."
+        echo "                                Defaults to '_CROPPED_PHOTOS'."
+        echo "  -r, --ratio <width:height>    Specify the desired cropping ratio (e.g., 16:9, 1:1)."
+        echo "                                If not provided, defaults to 4:5 or 5:4."
+        echo "  -h, --help                    Display this help message and exit."
+        echo
+        echo "Arguments:"
+        echo "  <image_file(s)>               The image file(s) to process."
+        echo
+        echo "Examples:"
+        echo "  photo_cropper image1.jpg image2.png"
+        echo "  photo_cropper *.jpg -o cropped_images"
+        echo "  photo_cropper -r 16:9 video_frame.png"
+        echo "  photo_cropper -r 1:1 square_image.jpg -o squares"
+    }
+
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h|--help)
+                show_help
+                return 0
+                ;;
+            -o|--output)
+                if [[ -n "$2" && ! "$2" =~ ^- ]]; then
+                    output_dir="$2"
+                    shift 2
+                else
+                    echo "Error: --output requires a directory name."
+                    return 1
+                fi
+                ;;
+            -r|--ratio)
+                if [[ -n "$2" && "$2" =~ ^[0-9]+:[0-9]+$ ]]; then
+                    crop_ratio="$2"
+                    shift 2
+                else
+                    echo "Error: --ratio requires a valid ratio (e.g., 16:9)."
+                    return 1
+                fi
+                ;;
+            -*)
+                echo "Error: Unknown option '$1'"
+                echo "Use 'photo_cropper --help' for usage information."
+                return 1
+                ;;
+            *)
+                input_files+=("$1")
+                shift
+                ;;
+        esac
+    done
+
+    # Check if any input files were provided
+    if [[ ${#input_files[@]} -eq 0 ]]; then
+        echo "Error: No input files provided."
+        echo "Use 'photo_cropper --help' for more information."
+        return 1
+    fi
+
+    # Create the output directory if it doesn't exist
+    mkdir -p "$output_dir"
+
+    # Check if ImageMagick is installed
+    if ! command -v magick &> /dev/null; then
+        echo "Error: ImageMagick's 'magick' command is not installed."
+        echo "Please install ImageMagick and try again."
+        return 1
+    fi
+
+    # Process each input file
+    for input_file in "${input_files[@]}"; do
+        # Handle wildcard expansion
+        for file in $input_file; do
+            # Check if the file exists
+            if [[ ! -f "$file" ]]; then
+                echo "Warning: File not found: $file"
+                continue
+            fi
+
+            # Get image dimensions
+            read width height <<< $(magick identify -format "%w %h" "$file")
+
+            # Determine aspect ratio and calculate cropping parameters
+            if [[ -z "$crop_ratio" ]]; then
+                # Auto-determine aspect ratio (4:5 or 5:4)
+                if (( $(echo "$width / $height > 1.0" | bc -l) )); then
+                    target_aspect_ratio=$(echo "scale=4; 5/4" | bc)
+                else
+                    target_aspect_ratio=$(echo "scale=4; 4/5" | bc)
+                fi
+            else
+                # Use specified aspect ratio
+                ratio_w=$(echo "$crop_ratio" | cut -d':' -f1)
+                ratio_h=$(echo "$crop_ratio" | cut -d':' -f2)
+                target_aspect_ratio=$(echo "scale=4; $ratio_w / $ratio_h" | bc)
+            fi
+
+            if (( $(echo "$width / $height > $target_aspect_ratio" | bc -l) )); then
+                # Image is wider than the target aspect ratio
+                target_width=$(echo "$height * $target_aspect_ratio" | bc | awk '{printf "%.0f", $0}')
+                target_height=$height
+                x_offset=$(( (width - target_width) / 2 ))
+                y_offset=0
+            else
+                # Image is taller than the target aspect ratio
+                target_width=$width
+                target_height=$(echo "$width / $target_aspect_ratio" | bc | awk '{printf "%.0f", $0}')
+                x_offset=0
+                y_offset=$(( (height - target_height) / 2 ))
+            fi
+
+            # Define output file path
+            output_file="$output_dir/$(basename "$file")"
+
+            # Crop using ImageMagick
+            magick "$file" -crop "${target_width}x${target_height}+${x_offset}+${y_offset}" +repage "$output_file"
+
+            # Verify if the output was created
+            if [[ -f "$output_file" ]]; then
+                actual_aspect_ratio=$(echo "scale=2; $target_width / $target_height" | bc -l)
+                echo "Processed '$file' -> '$output_file' (Cropped to ${actual_aspect_ratio} aspect ratio)"
+            else
+                echo "Error processing '$file'."
+            fi
+        done
+    done
+}
+

@@ -1,4 +1,3 @@
-import = ["/Users/henry/.config/alacritty/themes/themes/taerminal.toml"]
 
 [bell]
 animation = "EaseOutExpo"
@@ -73,6 +72,9 @@ bindings = [
     { key = "Delete", chars = "\u001b[3~" },
     { key = "Slash",  mods = "Control", chars = "\u001f" },
 ]
+
+[general]
+import = ["/Users/henry/.config/alacritty/themes/themes/taerminal.toml"]
 
 
 # dynamic_title = false
