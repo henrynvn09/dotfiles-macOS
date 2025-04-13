@@ -69,3 +69,9 @@ send_to_kindle() {
   echo mobi | mutt -s mobi -a "$argv[1]" -- dannytechn@kindle.com
 }
 
+#{{{
+fzf-dir() {
+  local result
+  result=$(fd --type d --hidden --exclude ".*" | fzf --preview 'tree -C {} | head -100')
+  [[ -n $result ]] && LBUFFER+="$result"
+}

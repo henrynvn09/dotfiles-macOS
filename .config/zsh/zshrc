@@ -111,7 +111,9 @@ bindkey '^W' kill-word
 bindkey '^L' forward-word
 # Move cursor backward a word
 bindkey '^H' backward-word
-bindkey '^E' fzf-cd-widget
+
+zle -N fzf-dir
+bindkey '^E' fzf-dir # Select dir like ctrl-T
 
 #bindkey " " magic-space
 
