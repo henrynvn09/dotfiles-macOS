@@ -68,3 +68,4 @@ tdc() {
 send_to_kindle() {
   echo mobi | mutt -s mobi -a "$argv[1]" -- dannytechn@kindle.com
 }
+

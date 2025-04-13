@@ -52,6 +52,8 @@ yabai -m rule --add app="^Raycast$" manage=off
 
 yabai -m rule --add app="^Firefox$" title="^Extension: \(Bitwarden" manage=off
 
+yabai -m rule --add app="^(Riot Client|League Of Legends|League of Legends)$" manage=off
+
 # Web browsers
 yabai -m rule --add label="Browsers" app="^(Google Chrome|Firefox Developer Edition|Safari|Arc|Firefox)$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|History|Picture-in-Picture|Library)$" manage=off
 

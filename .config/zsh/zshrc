@@ -58,12 +58,14 @@ plugins=(
 	fzf
 	misc-user-plugins
   photo-editing-user
+
 	
 	# non Oh my zsh
 	zsh-autosuggestions
 	zsh-syntax-highlighting
   ohmyzsh-full-autoupdate
 
+  zsh-ssh
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -92,6 +94,7 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias vi=nvim
+alias '$'=''
 
 export DOWNLOADS=$HOME/Downloads
 
@@ -117,7 +120,16 @@ bindkey '^[[1;6C' insert-cycledleft
 bindkey '^[[1;6D' insert-cycledright
 # 1}}}
 
-export FZF_DEFAULT_COMMAND='fd --max-depth 4'
+# Alt-C: Only show non-hidden folders with tree
+export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude ".*"'
+export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -100'"
+
+# Ctrl-T: Only show non-hidden files
+export FZF_CTRL_T_COMMAND='fd --type f --hidden --exclude ".*"'
+export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always {} | head -100'"
+
+# Enable fzf keybindings
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # remove underline in PATH suggestion
 # To differentiate aliases from other command types
