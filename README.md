@@ -1,11 +1,7 @@
 ## What to do after upgrade
 - Yabai: replace hash
 ```
-sudo visudo -f /private/etc/sudoers.d/yabai
-
-#  replace <hash> with the sha256 hash of the yabai binary (output of: shasum -a 256 $(which yabai)).
-
-<user> ALL=(root) NOPASSWD: sha256:<hash> <yabai> --load-sa
+echo "$(whoami) ALL=(root) NOPASSWD: sha256:$(shasum -a 256 $(which yabai) | cut -d " " -f 1) $(which yabai) --load-sa" | sudo tee /private/etc/sudoers.d/yabai
 ```
 
 ## Switch node version
