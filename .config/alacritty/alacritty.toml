@@ -1,8 +1,9 @@
 
 [bell]
 animation = "EaseOutExpo"
-color = "#176080"
-duration = 200
+color = "#32BB2D"
+duration = 300
+command = { program = "afplay", args = ["/Users/henry/.config/alacritty/resources/kernel.m4a"] }
 
 [cursor]
 blink_timeout = 0
@@ -21,7 +22,7 @@ offset = { x = 0, y = 1 }
 
 
 [scrolling]
-history = 200
+history = 1000
 multiplier = 3
 
 [window]

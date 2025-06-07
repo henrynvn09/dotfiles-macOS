@@ -50,6 +50,7 @@ plugins=(
   gitignore
 	# macos
 	z
+  zbell
 	copypath
 	sprunge
 	dircycle
@@ -68,7 +69,6 @@ plugins=(
   zsh-ssh
 )
 
-source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -118,8 +118,8 @@ bindkey '^E' fzf-dir # Select dir like ctrl-T
 #bindkey " " magic-space
 
 # dircycle plugin
-bindkey '^[[1;6C' insert-cycledleft
-bindkey '^[[1;6D' insert-cycledright
+bindkey '^[[1;13C' insert-cycledleft
+bindkey '^[[1;13D' insert-cycledright
 # 1}}}
 
 # Alt-C: Only show non-hidden folders with tree
@@ -127,7 +127,7 @@ export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude ".*"'
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -100'"
 
 # Ctrl-T: Only show non-hidden files
-export FZF_CTRL_T_COMMAND='fd --type f --hidden --exclude ".*"'
+export FZF_CTRL_T_COMMAND='fd --type f --hidden --ignore-case --exclude ".*"'
 export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always {} | head -100'"
 
 # Enable fzf keybindings
@@ -148,3 +148,12 @@ bindkey '^[[b' beginning-of-line
 export TERM="xterm-256color"
 
 alias seas='ssh -X lnxsrv15.seas.ucla.edu -l nguyend'
+# alias rm=trash
+alias mv='mv -i'
+
+
+# {{plugin zbell: prints a bell character when a command finishes if it has been running for longer than a specified duration
+zbell_duration=15
+# }}
+
+source $ZSH/oh-my-zsh.sh
