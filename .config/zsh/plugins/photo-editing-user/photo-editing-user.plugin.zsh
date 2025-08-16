@@ -698,4 +698,12 @@ photo_cropper() {
         done
     done
 }
-
+photo_move_by_ext() {
+  for f in *.*; do
+    [[ -f "$f" ]] || continue
+    ext="${f##*.}"
+    dir="${ext:u}"  # uppercase in zsh
+    mkdir -p "$dir"
+    mv "$f" "$dir/"
+  done
+}

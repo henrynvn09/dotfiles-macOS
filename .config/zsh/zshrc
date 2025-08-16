@@ -7,8 +7,6 @@ export PATH=/opt/homebrew/bin:$PATH
 export ZSH="$HOME/.oh-my-zsh"
 
 # ============== PERSONAL PATH ==================
-export OBSIDIAN="$HOME/Documents/obsidian"
-export OBSIDIAN_CURRENT_CLASS="$OBSIDIAN/109 - current classes"
 
 # Would you like to use another custom folder than $ZSH/custom?
 ZSH_CUSTOM="$CONFIG_HOME/zsh"
@@ -59,6 +57,7 @@ plugins=(
 	fzf
 	misc-user-plugins
   photo-editing-user
+  q
 
 	
 	# non Oh my zsh
@@ -95,9 +94,6 @@ plugins=(
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias vi=nvim
 alias '$'=''
-
-export DOWNLOADS=$HOME/Downloads
-
 
 eval $(thefuck --alias)
 
@@ -146,14 +142,18 @@ eval "$(starship init zsh)"
 bindkey '^[[b' beginning-of-line
 
 export TERM="xterm-256color"
+alias rasp="ssh hthh@192.168.4.61"
 
-alias seas='ssh -X lnxsrv15.seas.ucla.edu -l nguyend'
 # alias rm=trash
 alias mv='mv -i'
 
 
 # {{plugin zbell: prints a bell character when a command finishes if it has been running for longer than a specified duration
-zbell_duration=15
+zbell_duration=30
 # }}
 
+
+source $ZSH_CUSTOM/env.zshrc
+
 source $ZSH/oh-my-zsh.sh
+

@@ -5,7 +5,7 @@ count_pid=$(yabai -m query --windows | jq "[.[] | select(.pid == ${window_pid})]
 
 app_name=$(yabai -m query --windows --window | jq -r '.app') 
 
-if [ "$app_name" = "Finder"]; then
+if [ "$app_name" == "Finder" ]; then
 	yabai -m window --minimize
   exit
 fi

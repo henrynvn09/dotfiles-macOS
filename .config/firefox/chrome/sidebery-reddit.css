@@ -27,3 +27,7 @@
   color: var(--chrome-color, inherit) !important;
   padding-inline: 0 !important;
 }
+
+#sidebar-panel-header {
+    display: none !important;
+}

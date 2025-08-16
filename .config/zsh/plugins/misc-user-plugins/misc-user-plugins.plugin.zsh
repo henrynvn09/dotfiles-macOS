@@ -75,3 +75,16 @@ fzf-dir() {
   result=$(fd --type d --hidden --exclude ".*" | fzf --preview 'tree -C {} | head -100')
   [[ -n $result ]] && LBUFFER+="$result"
 }
+
+
+#{{{ file handler
+upload-file() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: bashupload <file>"
+    return 1
+  fi
+  curl bashupload.com -T "$1"
+}
+
+
+#}}}

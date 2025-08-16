@@ -113,6 +113,6 @@ alt - q : $HOME/.config/skhd/kill_last_instance.sh
 
 cmd - q : echo "Command + Q is disabled"
 
-shift + alt - d : yabai -m space --toggle show-desktop
+# shift + alt - d : yabai -m space --toggle show-desktop
 alt - w : yabai -m space --toggle mission-control
 
