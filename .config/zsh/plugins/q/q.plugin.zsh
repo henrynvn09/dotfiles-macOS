@@ -1,12 +1,11 @@
 # q - Quick LLM queries with LLM CLIs
-# Inspired by https://entropicthoughts.com/q
-# Converted from Nushell to Zsh by an AI assistant.
+# Stolen from https://github.com/wonrax/dotfiles/blob/main/bin/q
+# Converted from Nushell to zsh by Gemini under supervision
 
 # To use this plugin, add 'q' to the plugins array in your .zshrc file:
 # plugins=(... q)
 
 # Ensure the 'opencode' command is available in your PATH.
-
 
 # Main q function
 q() {
