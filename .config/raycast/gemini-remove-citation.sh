@@ -6,7 +6,7 @@
 # Required parameters:
 # @raycast.schemaVersion 1
 # @raycast.title gemini remove citation
-# @raycast.mode compact
+# @raycast.mode silent
 
 # Optional parameters:
 # @raycast.icon 📎
@@ -17,7 +17,7 @@
 # @raycast.authorURL https://raycast.com/henry_nguyen
 
 pbpaste | \
-sed -E 's/\[cite_start\]//g; s/\[cite_end\]//g; s/\[cite: *[0-9, ]+\]//g' | \
+  sed -E 's/\[(cite_start|cite\\_start)\]//g; s/\[(cite_end|cite\_end)\]//g; s/\[cite: *[0-9, ]+\]//g' | \
 pbcopy
 
 echo "Cleaned citations removed from clipboard."
