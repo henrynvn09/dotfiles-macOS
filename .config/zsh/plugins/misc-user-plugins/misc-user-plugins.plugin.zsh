@@ -88,3 +88,33 @@ upload-file() {
 
 
 #}}}
+
+zip-protect() {
+  # Check if at least one file is given
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: zip-protect <file1> [file2 ...]"
+    return 1
+  fi
+
+  local files=("$@")
+
+  # Default zip name (remove extension from first file)
+  local base_name="${files[1]%.*}"
+  local default_zip="${base_name}.zip"
+
+  # Prompt for zip name
+  echo "Enter zip file name (default: $default_zip):"
+  read zip_name
+  zip_name=${zip_name:-$default_zip}
+
+  # Prompt for password
+  echo "Enter password for the zip file (default: 5678VBNM&):"
+  read -s password
+  password=${password:-5678VBNM&}
+
+  # Create password-protected zip
+  zip -r -P "$password" "$zip_name" "${files[@]}"
+
+  echo "Created $zip_name with password protection."
+}
+

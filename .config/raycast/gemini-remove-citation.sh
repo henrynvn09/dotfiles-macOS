@@ -17,7 +17,8 @@
 # @raycast.authorURL https://raycast.com/henry_nguyen
 
 pbpaste | \
-  sed -E 's/\[(cite_start|cite\\_start)\]//g; s/\[(cite_end|cite\_end)\]//g; s/\[cite: *[0-9, ]+\]//g' | \
+  sed -E 's/\[(cite_start|cite\\_start)\]//g; s/\[(cite_end|cite\_end)\]//g; s/\[cite: .+\]//g' | \
+  sed -E '/^$/N;/^\n[[:space:]]*-/D' | \
 pbcopy
 
 echo "Cleaned citations removed from clipboard."
